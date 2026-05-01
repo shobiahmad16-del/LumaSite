@@ -1,60 +1,52 @@
-// Update current year automatically
-document.getElementById('year').textContent = new Date().getFullYear();
+// Sticky Navbar
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('active');
+});
 
 // Dark Mode Toggle
 const themeToggle = document.getElementById('theme-toggle');
 const moonIcon = document.querySelector('.moon-icon');
 const sunIcon = document.querySelector('.sun-icon');
-const rootElement = document.documentElement;
+const htmlElement = document.documentElement;
 
-// Check local storage for theme preference
-const currentTheme = localStorage.getItem('theme');
-if (currentTheme === 'dark') {
-    rootElement.setAttribute('data-theme', 'dark');
+// Check saved theme or system preference
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    htmlElement.setAttribute('data-theme', 'dark');
     moonIcon.style.display = 'none';
     sunIcon.style.display = 'block';
+} else {
+    htmlElement.removeAttribute('data-theme');
+    moonIcon.style.display = 'block';
+    sunIcon.style.display = 'none';
 }
 
 themeToggle.addEventListener('click', () => {
-    if (rootElement.hasAttribute('data-theme')) {
-        rootElement.removeAttribute('data-theme');
+    if (htmlElement.getAttribute('data-theme') === 'dark') {
+        htmlElement.removeAttribute('data-theme');
         localStorage.setItem('theme', 'light');
         moonIcon.style.display = 'block';
         sunIcon.style.display = 'none';
     } else {
-        rootElement.setAttribute('data-theme', 'dark');
+        htmlElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
         moonIcon.style.display = 'none';
         sunIcon.style.display = 'block';
-    }
-});
-
-// Mobile Menu Toggle
-const menuToggle = document.getElementById('menu-toggle');
-const navMenu = document.getElementById('nav-menu');
-
-menuToggle.addEventListener('click', () => {
-    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', !isExpanded);
-    menuToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close menu when clicking a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// Sticky Header
-const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
     }
 });
