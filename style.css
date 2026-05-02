@@ -1,4 +1,4 @@
-:root {
+ :root {
     --bg-color: #FFFFFF;
     --text-primary: #111111;
     --text-secondary: #666666;
@@ -101,9 +101,9 @@ p { color: var(--text-secondary); font-size: 1.125rem; max-width: 600px; transit
 .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); padding: 1rem 2rem; }
 .btn-secondary:hover { background: var(--bg-alt); border-color: var(--text-secondary); }
 
-/* Hero */
-.hero { padding: 12rem 2rem 8rem; text-align: center; }
-.hero-content { max-width: 850px; margin: 0 auto; animation: fadeUp 1s ease-out forwards; }
+/* Hero — position relative for parallax overlay */
+.hero { padding: 12rem 2rem 8rem; text-align: center; position: relative; overflow: hidden; }
+.hero-content { max-width: 850px; margin: 0 auto; animation: fadeUp 1s ease-out forwards; position: relative; z-index: 2; }
 .hero p { margin: 0 auto 2.5rem; font-size: clamp(1rem, 3vw, 1.25rem); }
 .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
@@ -112,9 +112,73 @@ section { padding: 8rem 2rem; }
 .section-header { margin-bottom: 4rem; }
 .section-header.center { text-align: center; }
 
-/* Animations */
-.fade-in-section {
-    animation: fadeUp 0.8s ease-out forwards;
+/* ============================================================
+   SCROLL REVEAL SYSTEM (JS auto-applies .scroll-reveal)
+   Elemen mulai tersembunyi, lalu muncul saat masuk viewport.
+   Ubah durasi/easing di sini untuk menyesuaikan kecepatan.
+   ============================================================ */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    will-change: opacity, transform;
+}
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   BUTTON RIPPLE EFFECT (JS injects .ripple span on click)
+   ============================================================ */
+.btn-primary, .btn-secondary, .btn-primary-large, .btn-demo {
+    position: relative;
+    overflow: hidden;
+}
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: rippleAnim 0.5s ease-out;
+    pointer-events: none;
+}
+@keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+}
+
+/* ============================================================
+   HOVER GLOW (diterapkan otomatis ke portfolio-card & demo-card)
+   ============================================================ */
+.portfolio-card, .demo-card, .deliverables-card, .testimonial-card {
+    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out, border-color 0.4s ease-out;
+}
+.portfolio-card:hover, .deliverables-card:hover, .testimonial-card:hover {
+    box-shadow: 0 0 25px rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.2);
+}
+[data-theme="dark"] .portfolio-card:hover,
+[data-theme="dark"] .deliverables-card:hover,
+[data-theme="dark"] .testimonial-card:hover {
+    box-shadow: 0 0 30px rgba(99,102,241,0.15);
+}
+
+/* ============================================================
+   HERO PARALLAX BACKGROUND (JS injects .hero-parallax-bg)
+   ============================================================ */
+.hero-parallax-bg {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    overflow: hidden;
+}
+.hero-parallax-bg .shape {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12;
+    will-change: transform;
+}
+
+/* Accessibility: respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-reveal { transition: none; opacity: 1; transform: none; }
+    .ripple { animation: none; }
 }
 
 /* Demo First Section */
@@ -375,4 +439,6 @@ footer { padding: 3rem 2rem; border-top: 1px solid var(--border-color); transiti
     .lead-capture-card { padding: 3rem 1.5rem; }
     .f-links { margin-top: 1rem; }
     .f-links a { margin-left: 0; margin-right: 1.5rem; }
+
+    
 }
