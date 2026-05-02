@@ -64,7 +64,7 @@ p { color: var(--text-secondary); font-size: 1.125rem; max-width: 600px; transit
     padding: 1.5rem 4rem; max-width: 1400px; margin: 0 auto;
 }
 .logo { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; }
-.nav-links a { text-decoration: none; color: var(--text-secondary); margin: 0 1.5rem; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a { text-decoration: none; color: var(--text-secondary); margin: 0 1rem; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
 .nav-links a:hover { color: var(--text-primary); }
 
 .nav-actions { display: flex; align-items: center; gap: 1rem; }
